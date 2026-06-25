@@ -1,0 +1,22 @@
+# --- Python & OS ---
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# --- Compiled libraries  ---
+*.dll
+*.lib
+*.pyd
+*.so
+
+# --- Trained Model Files  ---
+models/distilbert_finetuned/model.safetensors
+models/distilbert_finetuned/pytorch_model.bin
+models/distilbert_finetuned/optimizer.pt
+results/
+logs/
+
+# --- VS Code & Environment ---
+.vscode/
+.env
