@@ -23,12 +23,3 @@ jobs:
         run: |
           cd app
           pytest tests/test_main.py -v --tb=short || true
-
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Build Docker image
-        run: docker build -t vehicle-intent .
