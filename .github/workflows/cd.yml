@@ -12,24 +12,19 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/login-action@v3
+      
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v5
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/vehicle-intent:latest
-            ghcr.io/${{ github.repository }}/vehicle-intent:${{ github.sha }}
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy
-        run: echo "Deploying to Kubernetes..."
+            ghcr.io/adepuharshavardhan2001/vehicle-intent:latest
+            ghcr.io/adepuharshavardhan2001/vehicle-intent:${{ github.sha }}
