@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vehicle-config
+data:
+  mysql-database: "vehicle_logs"
+  model-path: "/app/models/distilbert_finetuned"
+  label-path: "/app/models/label_map.json"

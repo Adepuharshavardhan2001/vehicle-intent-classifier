@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vehicle-intent
+      tier: database
+  template:
+    metadata:
+      labels:
+        app: vehicle-intent
+        tier: database
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vehicle-secrets
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicle-config
+                  key: mysql-database
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vehicle-intent
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: vehicle-intent
+        tier: backend
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/adepuharshavardhan2001/vehicle-intent:latest
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vehicle-secrets
+                  key: database-url
+            - name: MODEL_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicle-config
+                  key: model-path
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: model-storage
+              mountPath: /app/models
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: model-pvc
