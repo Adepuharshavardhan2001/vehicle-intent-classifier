@@ -25,6 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ghcr.io/adepuharshavardhan2001/vehicle-intent:latest
-            ghcr.io/adepuharshavardhan2001/vehicle-intent:${{ github.sha }}
+          tags: ghcr.io/adepuharshavardhan2001/vehicle-intent:latest
