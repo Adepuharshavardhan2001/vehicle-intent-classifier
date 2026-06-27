@@ -10,7 +10,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
-COPY models/ ./models/
 
 RUN useradd --create-home appuser
 RUN chown -R appuser:appuser /app
