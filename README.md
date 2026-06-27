@@ -35,32 +35,61 @@ A production-ready ML microservice that classifies in-vehicle voice commands usi
 ---
 
 ##  Project Structure
+
 vehicle-intent-classifier/
+
 ├── .github/
+
 │ └── workflows/
+
 │ ├── ci.yml # CI Pipeline (lint, test, build)
+
 │ └── cd.yml # CD Pipeline (build, push, deploy)
+
 ├── app/
+
 │ ├── main.py # FastAPI application
+
 │ ├── model.py # ML model wrapper
+
 │ ├── database.py # Database connection & model
+
 │ ├── crud.py # Database operations
+
 │ ├── schema.py # Pydantic request/response schemas
+
 │ └── tests/
+
 │ ├── test_main.py # API tests
+
 │ └── test_model.py # Model tests
+
 ├── k8s/
+
 │ ├── deployment.yaml # Kubernetes Deployments
+
 │ ├── service.yaml # Kubernetes Services
+
 │ ├── configmap.yaml # Environment configuration
+
 │ ├── secret.yaml # Sensitive data
+
 │ └── pvc.yaml # Persistent storage
+
 ├── models/
+
 │ ├── distilbert_finetuned/ # Trained model files
+
 │ └── label_map.json # Intent label mapping
+
 ├── train.py # Model training script
+
 ├── Dockerfile # Container build instructions
+
 ├── docker-compose.yml # Local orchestration
+
 ├── requirements.txt # Production dependencies
+
 ├── requirements-dev.txt # Development dependencies
+
 └── README.md # This file
