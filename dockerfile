@@ -22,7 +22,7 @@ ENV PYTHONUNBUFFERED=1 \
     PATH=/root/.local/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libmariadb3 wget unzip \
+    libmariadb3 wget \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -31,10 +31,10 @@ COPY --from=builder /root/.local /root/.local
 COPY app/ ./app/
 
 RUN mkdir -p models && \
-    wget -q https://github.com/Adepuharshavardhan2001/vehicle-intent-classifier/releases/download/v1.0/distilbert_finetuned.zip -O /tmp/model.zip && \
-    unzip -q /tmp/model.zip -d models/ && \
-    rm /tmp/model.zip && \
-    apt-get purge -y wget unzip && \
+    wget -q https://github.com/Adepuharshavardhan2001/vehicle-intent-classifier/releases/download/v1.0/distilbert_finetuned.tar.gz -O /tmp/model.tar.gz && \
+    tar -xzf /tmp/model.tar.gz -C models/ && \
+    rm /tmp/model.tar.gz && \
+    apt-get purge -y wget && \
     apt-get autoremove -y
 
 RUN useradd --create-home appuser && \
