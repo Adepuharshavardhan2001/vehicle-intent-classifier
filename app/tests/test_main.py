@@ -40,9 +40,11 @@ def test_predict_blank_text():
     assert response.status_code == 422
 
 
-@patch("app.model.Classifier.predict")
-def test_predict_valid_text(mock_predict):
-    mock_predict.return_value = ("navigate", 0.95)
+@patch("app.main.create_log")
+@patch("app.main.classifier")
+def test_predict_valid_text(mock_classifier, mock_create_log):
+    mock_classifier.predict.return_value = ("navigate", 0.95)
+    mock_create_log.return_value = None
     response = client.post("/predict", json={"text": "navigate to hospital"})
     assert response.status_code == 200
     data = response.json()
@@ -50,9 +52,11 @@ def test_predict_valid_text(mock_predict):
     assert data["confidence"] > 0.5
 
 
-@patch("app.model.Classifier.predict")
-def test_predict_returns_valid_intent(mock_predict):
-    mock_predict.return_value = ("play_music", 0.89)
+@patch("app.main.create_log")
+@patch("app.main.classifier")
+def test_predict_returns_valid_intent(mock_classifier, mock_create_log):
+    mock_classifier.predict.return_value = ("play_music", 0.89)
+    mock_create_log.return_value = None
     response = client.post("/predict", json={"text": "play some music"})
     assert response.status_code == 200
     assert response.json()["intent"] in [
@@ -64,7 +68,7 @@ def test_predict_returns_valid_intent(mock_predict):
     ]
 
 
-@patch("app.crud.get_recent_logs")
+@patch("app.main.get_recent_logs")
 def test_get_logs_empty(mock_get_logs):
     mock_get_logs.return_value = []
     response = client.get("/logs")
@@ -72,7 +76,7 @@ def test_get_logs_empty(mock_get_logs):
     assert response.json() == []
 
 
-@patch("app.crud.get_recent_logs")
+@patch("app.main.get_recent_logs")
 def test_get_logs_with_data(mock_get_logs):
     mock_get_logs.return_value = [
         {
