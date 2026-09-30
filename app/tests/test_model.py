@@ -3,14 +3,14 @@ import sys
 
 import pytest
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 pytestmark = pytest.mark.skipif(
     not os.path.exists("models/distilbert_finetuned"),
     reason="Model not found. Run train.py first.",
 )
 
-from model import Classifier
+from app.model import Classifier
 
 
 @pytest.fixture(scope="module")

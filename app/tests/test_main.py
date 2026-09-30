@@ -2,11 +2,11 @@ import os
 import sys
 from unittest.mock import patch
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from fastapi.testclient import TestClient
 
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
@@ -40,7 +40,7 @@ def test_predict_blank_text():
     assert response.status_code == 422
 
 
-@patch("model.Classifier.predict")
+@patch("app.model.Classifier.predict")
 def test_predict_valid_text(mock_predict):
     mock_predict.return_value = ("navigate", 0.95)
     response = client.post("/predict", json={"text": "navigate to hospital"})
@@ -50,7 +50,7 @@ def test_predict_valid_text(mock_predict):
     assert data["confidence"] > 0.5
 
 
-@patch("model.Classifier.predict")
+@patch("app.model.Classifier.predict")
 def test_predict_returns_valid_intent(mock_predict):
     mock_predict.return_value = ("play_music", 0.89)
     response = client.post("/predict", json={"text": "play some music"})
@@ -64,7 +64,7 @@ def test_predict_returns_valid_intent(mock_predict):
     ]
 
 
-@patch("crud.get_recent_logs")
+@patch("app.crud.get_recent_logs")
 def test_get_logs_empty(mock_get_logs):
     mock_get_logs.return_value = []
     response = client.get("/logs")
@@ -72,7 +72,7 @@ def test_get_logs_empty(mock_get_logs):
     assert response.json() == []
 
 
-@patch("crud.get_recent_logs")
+@patch("app.crud.get_recent_logs")
 def test_get_logs_with_data(mock_get_logs):
     mock_get_logs.return_value = [
         {

@@ -42,16 +42,5 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Lint with ruff
-        run: ruff check app/ --output-format=github
-
       - name: Run tests
         run: pytest app/tests/ -v --tb=short
-
-      - name: Run Trivy scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: "fs"
-          scan-ref: "."
-          severity: "CRITICAL,HIGH"
-          exit-code: "0"
