@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vehicle-mysql
+spec:
+  selector:
+    app: vehicle-intent
+    tier: database
+  ports:
+    - port: 3306
+      targetPort: 3306
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vehicle-api
+spec:
+  selector:
+    app: vehicle-intent
+    tier: backend
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: LoadBalancer

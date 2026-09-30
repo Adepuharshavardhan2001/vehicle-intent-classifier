@@ -1,0 +1,5 @@
+MYSQL_ROOT_PASSWORD=password
+MYSQL_DATABASE=vehicle_logs
+DATABASE_URL=mysql+pymysql://root:password@db:3306/vehicle_logs
+MODEL_PATH=/app/models/distilbert_finetuned
+LABEL_PATH=/app/models/label_map.json
